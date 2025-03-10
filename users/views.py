@@ -62,6 +62,12 @@ def registration(request):
 
     return render(request, "users/registration.html", context)
 
+def user_cart(request):
+    context = {
+        'title':'Корзина'
+    }
+    return render(request, 'users/users_cart.html', context)
+
 @login_required
 def logout(request):
     auth.logout(request)
