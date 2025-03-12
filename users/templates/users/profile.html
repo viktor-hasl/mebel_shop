@@ -80,7 +80,17 @@
                             </div>
                         </div>
                         <!-- Корзина -->
-                        {% include "carts/include_cart.html" %}
+                        <div class="col-md-7">
+                            <div class=" bg-white p-4 mb-4 mx-2 rounded custom-shadow">
+                                <h3 class="text-center mb-4">Корзина</h3>
+                                <div class="container" id="cart-items-container">
+                                    <!-- Разметка корзины -->
+                                    {% include "carts/include_cart.html" %}
+                                    <!-- Закончилась разметка корзины -->
+                                </div>
+                            </div>
+                        </div>
+                    
                         <!-- Оформленные заказы -->
                         <div class="col-md-12">
                             <div class=" bg-white p-4 mb-4 mx-2 rounded custom-shadow">

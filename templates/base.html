@@ -1,5 +1,8 @@
 {% load static %}
 {% load my_tags %}
+{% load cart_tags %}
+
+{% user_carts request as carts %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -104,7 +107,7 @@
                         aria-expanded="false">
                         <img class="mx-1" src="{% static 'deps/icons/basket2-fill.svg' %}" alt="Catalog Icon" width="24"
                             height="24">
-                        <span id="goods-in-cart-count">0</span>
+                        <span id="goods-in-cart-count">{{ carts.total_quantity }}</span>
                     </button>
                 </div>
                 <!-- Разметка модального окна корзины -->
@@ -123,9 +126,11 @@
                                     {% include "carts/include_cart.html" %}
                                     <!-- Закончилась разметка корзины -->
                                 </div>
+                                {% if carts %}
                                 <a class="btn btn-dark" href="orders/create_order.html">
                                     Оформить заказ
                                 </a>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -150,14 +155,9 @@
 
         </div>
     </section>
-    <footer class="py-4 bg-dark">
-
-        <div class="container">
-            {% block footer %}{% endblock %}
-        </div>
-
-        <p></p>
-    </footer>
+    
+{% block footer %}{% endblock %}
+        
     <script src="{% static 'deps/js/jquery/jquery-3.7.0.min.js' %}"></script>
     <script src="{% static 'deps/js/jquery-events.js' %}"></script>
     <script src="{% static 'deps/js/jquery-ajax.js' %}"></script>

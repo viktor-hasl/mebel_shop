@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 {% load static %}
+{% load cart_tags %}
+{% user_carts request as carts %}
+
+
 
 {% block css %}
 <link rel="stylesheet" href="{% static 'deps/css/my_footer_css.css' %}">
@@ -16,11 +20,14 @@
                     {% include "carts/include_cart.html" %}
                     <!-- Закончилась разметка корзины -->
                 </div>
+                {% if carts %}
                 <a class="btn btn-dark" href="../orders/create_order.html">
                     Оформить заказ
                 </a>
+                {% endif %}
             </div>
         </div>
     </div>
 </div>
 {% endblock  %}
+
