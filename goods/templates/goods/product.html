@@ -34,7 +34,7 @@
                                 <p class="card-text">Цена: <strong>{{ product.math_discount }} $</strong></p>
                                 <h5 class="card-title">{{ product.title }}</h5>
                                 <p class="card-text">{{ product.description}}</p>
-                                <a href="#" class="btn btn-dark add-to-cart">Добавить в корзину</a>
+                                <a href="{% url "user_cart:cart_add" product.slug %}" class="btn btn-dark add-to-cart">Добавить в корзину</a>
                             </div>
                         </div>
                     </div>
