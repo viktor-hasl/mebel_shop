@@ -32,7 +32,11 @@ class Cart(models.Model):
     objects = CartQyerySet().as_manager()
 
     def __str__(self):
-        return f'Корзина: {self.user.username} | Товар: {self.product} |  Количество: {self.quantity}'
+        if not self.user:
+            username = self.session_key
+        else:
+            username = self.user.username
+        return f'Корзина: {username} | Товар: {self.product} |  Количество: {self.quantity}'
     
     def product_price(self):
         return round(self.product.math_discount() * self.quantity , 2)

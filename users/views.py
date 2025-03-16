@@ -5,6 +5,7 @@ from django.shortcuts import redirect, render
 from django.template import context
 from django.urls import reverse
 
+from carts.models import Cart
 from users.forms import ProfileForm, UserLoginForm, UserRegistrationForm
 
 # Create your views here.
@@ -19,9 +20,15 @@ def login(request):
             password = request.POST["password"]
             # Проверяем или есть такой пользователь
             user = auth.authenticate(username=username, password=password)
+
+            session_key = request.session.session_key
+
             if user:
                 # Если есть то входим и делаем перевод на другую страницу
                 auth.login(request, user)
+                if session_key:
+                    Cart.objects.filter(session_key=session_key).update(user=user)
+
                 return HttpResponseRedirect(reverse("main:index"))
     else:
         form = UserLoginForm()

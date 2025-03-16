@@ -25,7 +25,7 @@ def catalog(request, catalog_slug=None):
     if order_by and order_by != "default":
         goods = goods.order_by(order_by)
 
-    paginator = Paginator(goods, 2)
+    paginator = Paginator(goods, 3)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
     content = {"title": "Каталог", "goods": page_obj, "catalog_slug": catalog_slug}
