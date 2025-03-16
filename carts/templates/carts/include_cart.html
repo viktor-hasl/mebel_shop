@@ -47,4 +47,10 @@
         <p class="float-left">Итого <strong>{{ carts.total_quantity }} </strong> товар(а) на сумму</p>
         <h4 class="float-left"><strong>{{ carts.total_price }} $</strong></h4>
     </div>
+    
 </div>
+{% if carts %}
+<a class="btn btn-dark" href="{% url "orders:create_order" %}">
+    Оформить заказ
+</a>
+{% endif %}

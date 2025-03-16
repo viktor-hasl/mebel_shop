@@ -6,6 +6,7 @@ from django.contrib.auth.models import AbstractUser
 
 class User(AbstractUser):
     img = models.ImageField(upload_to='user_img/', blank=True, null=True, verbose_name='Фото профиля')
+    phone = models.CharField(max_length=10, blank=True, null=True, verbose_name='Номер телефона')
 
     class Meta:
         db_table = 'auth_user'
