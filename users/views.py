@@ -1,10 +1,14 @@
+import decimal
 from django.contrib.auth.decorators import login_required
 from django.contrib import auth, messages
+from django.db.models import Prefetch
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.template import context
 from django.urls import reverse
 
+from carts.models import Cart
+from orders.models import Order, OrderItem
 from users.forms import ProfileForm, UserLoginForm, UserRegistrationForm
 
 # Create your views here.
@@ -19,9 +23,15 @@ def login(request):
             password = request.POST["password"]
             # Проверяем или есть такой пользователь
             user = auth.authenticate(username=username, password=password)
+
+            session_key = request.session.session_key
+
             if user:
                 # Если есть то входим и делаем перевод на другую страницу
                 auth.login(request, user)
+                if session_key:
+                    Cart.objects.filter(session_key=session_key).update(user=user)
+
                 return HttpResponseRedirect(reverse("main:index"))
     else:
         form = UserLoginForm()
@@ -40,10 +50,28 @@ def profile(request):
             return HttpResponseRedirect(reverse('users:profile'))
     else:
         form = ProfileForm(instance=request.user)
-
+    
+    orders = Order.objects.filter(user=request.user).prefetch_related(
+                Prefetch(
+                    "orderitem_set",
+                    queryset=OrderItem.objects.select_related("product"),
+                )
+            ).order_by("-id")
+    
+    total_price = {}
+    for order in orders:
+        total_price[order.id]  = 0.00
+    
+        for item in order.orderitem_set.all():
+            total_price[order.id] += float(item.products_price())
+            
+            
+        
     context = {
         'title' : 'Страница пользователя',
         "form": form,
+        'orders': orders,
+        'total_price': total_price
     }
     return render(request, "users/profile.html", context)
 
